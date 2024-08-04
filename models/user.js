@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-mongoose.connect(`mongodb://localhost/NotesApp`)
+mongoose.connect(`mongodb://localhost:27017/NotesApp`)
 
 const userSchema = mongoose.Schema({
     username: String,
