@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body >
+    <div class="w-full min-h-screen bg-zinc-900 text-white p-10">
+        <h3 class="text-3xl mb-5 text-center">All Posts</h3>
+        <div class="postcontainer mt-5 flex flex-wrap gap-5 justify-center">
+            <% allposts.reverse().forEach(function(post){ %>
+                <div class="post w-1/4 p-4 mb-4 border-2 border-zinc-800 rounded-md ">
+                    <h4 class="text-blue-500 mb-2">
+                        
+                        <%=post.user.username %>
+                    </h4>
+                    <p class="text-sm tracking tight">
+                        <%=post.content%>
+                    </p>
+                    <small class="mt-2 inline-block">
+                        <%=post.likes.length %> Likes
+                    </small>
+                    <div class="btns flex gap-4 mt-5">
+                        <a href="/likepost/<%=post._id%>/<%= curruser._id %>" class="text-blue-500">
+                            <%= post.likes.indexOf(curruser._id) !==-1 ? "Unlike" : "Like" %>
+                        </a>
+                    </div>
+                </div>
+                <%}) %>
+
+        </div>
+        
+    </div>
+</body>
+
+</html>

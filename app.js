@@ -127,4 +127,20 @@ app.post("/upload" ,upload.single("image") ,isLoggedin , async (req,res)=>{
     await user.save();
     res.redirect("/profile")
 })
+app.get("/allposts"  , isLoggedin , async (req , res)=>{
+    let curruser = await userModel.findOne({email:req.user.email})
+    const allposts = await postModel.find().populate("user");
+    res.render("posts" ,{allposts ,curruser});
+})
+app.get("/likepost/:postid/:userid", isLoggedin,async(req,res)=>{
+    let post = await postModel.findOne({_id:req.params.postid}).populate("user");
+    if(post.likes.indexOf(req.params.userid) === -1){
+        post.likes.push(req.params.userid)
+    }
+    else{
+        post.likes.splice(post.likes.indexOf(req.user.userid),1)
+    }
+    await post.save();
+    res.redirect("/allposts");
+})
 app.listen(3000);
