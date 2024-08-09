@@ -4,37 +4,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>SocialLink | All Posts</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="/css/style.css">
 </head>
 
-<body >
-    <div class="w-full min-h-screen bg-zinc-900 text-white p-10">
-        <h3 class="text-3xl mb-5 text-center">All Posts</h3>
-        <div class="postcontainer mt-5 flex flex-wrap gap-5 justify-center">
-            <% allposts.reverse().forEach(function(post){ %>
-                <div class="post w-1/4 p-4 mb-4 border-2 border-zinc-800 rounded-md ">
-                    <h4 class="text-blue-500 mb-2">
-                        
-                        <%=post.user.username %>
-                    </h4>
-                    <p class="text-sm tracking tight">
-                        <%=post.content%>
-                    </p>
-                    <small class="mt-2 inline-block">
-                        <%=post.likes.length %> Likes
-                    </small>
-                    <div class="btns flex gap-4 mt-5">
-                        <a href="/likepost/<%=post._id%>/<%= curruser._id %>" class="text-blue-500">
-                            <%= post.likes.indexOf(curruser._id) !==-1 ? "Unlike" : "Like" %>
-                        </a>
-                    </div>
-                </div>
-                <%}) %>
-
+<body class="bg-gradient-to-br from-gray-900 via-black to-gray-900 text-white min-h-screen p-8">
+    <!-- Header -->
+    <div class="w-full flex justify-between items-center mb-6">
+        <h3 class="text-4xl font-bold text-blue-300">All Posts</h3>
+        <div class="flex gap-4">
+            <a href="/profile" class="bg-blue-500 text-white px-4 py-2 rounded-md shadow-lg hover:bg-blue-600 transition duration-300">Go to Profile</a>
+            <a href="/logout" class="bg-red-500 text-white px-4 py-2 rounded-md shadow-lg hover:bg-red-600 transition duration-300">Logout</a>
         </div>
-        
+    </div>
+
+    <!-- Posts Container -->
+    <div class="postcontainer flex flex-wrap gap-6 justify-center">
+        <% allposts.reverse().forEach(function(post){ %>
+            <div class="post w-full sm:w-80 p-5 bg-zinc-800 border-2 border-zinc-700 rounded-lg shadow-lg">
+                <h4 class="text-blue-400 font-semibold mb-3">
+                    <%= post.user.username %>
+                </h4>
+                <p class="text-sm text-zinc-200 mb-3">
+                    <%= post.content %>
+                </p>
+                <small class="block text-zinc-400 text-sm mb-4">
+                    <%= post.likes.length %> Likes
+                </small>
+                <div class="btns flex justify-end">
+                    <a href="/likepost/<%= post._id %>/<%= curruser._id %>" class="text-blue-400 hover:text-blue-500 transition duration-300">
+                        <%= post.likes.indexOf(curruser._id) !== -1 ? "Unlike" : "Like" %>
+                    </a>
+                </div>
+            </div>
+        <% }) %>
     </div>
 </body>
 

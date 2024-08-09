@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.post('/register', async (req, res) => {
     let { name, username, age, email, password } = req.body;
     let user = await userModel.findOne({ email })
-    if (user) return res.status(500).send("User already registered");
+    if (user) return res.render("accountFailure");
 
     bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(password, salt, async (err, hash) => {
@@ -49,7 +49,7 @@ app.post("/login", async (req, res) => {
     let { email, password } = req.body;
 
     let user = await userModel.findOne({ email });
-    if (!user) return res.status(500).send("Something Went Wrong !!!")
+    if (!user) return res.status(500).redirect("/login")
 
     bcrypt.compare(req.body.password, user.password, (err, result) => {
         if (result) {
@@ -59,7 +59,7 @@ app.post("/login", async (req, res) => {
             res.redirect("/profile")
         }
         else {
-            res.send("Something Went Wrong");
+            res.redirect("/login");
 
         }
     })
@@ -82,7 +82,7 @@ function isLoggedin(req, res, next) {
     }
 
 }
-app.post("/profile" ,isLoggedin , async (req,res)=>{
+app.post("/create" ,isLoggedin , async (req,res)=>{
     let user = await userModel.findOne({email:req.user.email})
     let {content} = req.body;
     let post = await postModel.create({
@@ -143,4 +143,8 @@ app.get("/likepost/:postid/:userid", isLoggedin,async(req,res)=>{
     await post.save();
     res.redirect("/allposts");
 })
+app.get("/delete/:id" , async (req,res)=>{
+    let deletedpost = await postModel.findOneAndDelete({_id:req.params.id})
+    res.redirect("/profile");
+}) 
 app.listen(3000);
